@@ -1,5 +1,5 @@
-x 2020-09-01 Decide on a data type to represent alphabets and characters.
-x 2020-09-01 Decide on a data type to represent strings.
+x 2020-09-03 Decide on a data type to represent alphabets and characters.
+Decide on a data type to represent strings.
 Write a function that generates the Nth string of a given alphabet's lexicographic order.
 Define a data type to represent DFAs.
 Write the definition of a DFA that accepts no strings.
