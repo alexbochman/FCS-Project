@@ -5,22 +5,34 @@
 #include <iostream>
 #include <vector>
 
+// Minor class State:
+// - States are the nodes in a DFA
+// - Each state has its own value, which is a Character value
+// - Each state knows of each of its outward connections to other states
 class State
 {
 private:
+    Character stateValue;
+    std::vector<Character> outwardConnections;
 
 public:
-    State(){};
+    State() {stateValue.set_sValue("-1");}
+    State(Character stateValue) {this->stateValue = stateValue;}
     ~State() {}
+
+    std::string getStateValue() {return stateValue.get_sValue();}
 };
 
+// Major class DFA:
+// - startState is beginning of a DFA
+// - dfaVector is a vector that contains ALL of the States
+// - acceptingStates is a vector that contains all of the accepting States, if any
 class DFA
 {
 private:
-    Character startState;
-    std::vector<Character> states;
-    std::vector<Character> acceptingStates;
-    State myState();
+    State startState;
+    std::vector<State> dfaVector;
+    std::vector<State> acceptingStates;
 
 public:
     DFA();

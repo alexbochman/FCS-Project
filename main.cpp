@@ -8,12 +8,14 @@ using namespace std;
 int main()
 {
     Alphabet alphabet;
-    for(int i = 0; i < 16; i++)
+    for(int i = 0; i < 256; i++)
     {
+        if(!(i % 10)) cout << endl;
         cout << "Lexi(" << i << "): ";
         alphabet.lexi(i).printString();
         cout << endl;
     }
 
-    State myState;
+    State myState(Character("ab666"));
+    cout << "\nmyState.getStateValue(): = " << myState.getStateValue() << endl;
 }
