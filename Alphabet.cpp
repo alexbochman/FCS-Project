@@ -16,7 +16,7 @@ void Alphabet::printVector(std::vector<Character> vect)
     std::cout << "\nPrint vector output: " << std::endl;
 
     if(vect.empty())
-        std::cout << "This vector is empty." << std::endl;
+        std::cout << "Alphabet vector is empty." << std::endl;
     else
         for(Character c : vect)
             std::cout << "Vector: c.get_nValue(): " << c.get_nValue() << std::endl;
@@ -39,7 +39,7 @@ Str Alphabet::lexi(int input)
         {
             for(int j = 0; j < exp; j++)
             {
-                str.fillString(alphabetVector.at(input % amount_of_characters));
+                str.insert(alphabetVector.at(input % amount_of_characters));
                 input = input / alphabetVector.size();
             }
             return str;

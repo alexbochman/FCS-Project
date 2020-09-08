@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include "Alphabet.hpp"
+#include "DFA.hpp"
 
 using namespace std;
 
@@ -13,4 +14,6 @@ int main()
         alphabet.lexi(i).printString();
         cout << endl;
     }
+
+    State myState;
 }
