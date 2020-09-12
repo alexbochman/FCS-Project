@@ -11,14 +11,14 @@
 class Character
 {
 public:
-    Character() {sValue = "-1";}
-    Character(std::string string) { this->sValue = string; }
+    Character() {characterValue = "[DEFAULT CHARACTER CONSTRUCTOR]";}
+    Character(std::string string) { this->characterValue = string; }
     ~Character() {}
-    void set_sValue(std::string string) { this->sValue = string; }
-    std::string get_sValue() { return sValue; }
+    void setCharacterValue(std::string string) { this->characterValue = string; }
+    std::string getCharacterValue() { return characterValue; }
 
 private:
-    std::string sValue;
+    std::string characterValue;
 };
 
 // Minor class Str:
@@ -35,16 +35,26 @@ private:
 public:
     Str(){}
     ~Str() {}
+
+    std::string popFront()
+    {
+        std::string temp = strVector.front().getCharacterValue();
+        strVector.erase(strVector.begin());
+        return temp;
+    }
+
     void printString()
     {
         if (strVector.empty())
             std::cout << "\u03B5";
         else
             for (Character c : strVector)
-                std::cout << c.get_sValue();
+                std::cout << c.getCharacterValue();
     }
+
+    bool isEmpty() {return strVector.empty();}
     void insert(Character c) { strVector.insert(strVector.begin(), c); }
-    std::vector<Character> getString() { return strVector; }
+    std::vector<Character> getStr() { return strVector; }
 };
 
 // Major class Alphabet:
@@ -59,7 +69,10 @@ public:
     Alphabet();
     ~Alphabet();
     void printVector(std::vector<Character> vect);
+    void insert(Character);
+    std::vector<Character> getAlphabetVector();
     Str lexi(int n);
+
 };
 
 #endif
