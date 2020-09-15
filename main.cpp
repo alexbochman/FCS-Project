@@ -25,6 +25,7 @@ int main()
         cout << "====================================\n\n";
     }
 
+
     {
         cout << "[2]=================================";
         Alphabet alphabet;
@@ -105,8 +106,7 @@ int main()
         alphabet.insert(Character("E"));
         alphabet.insert(Character("L"));
         alphabet.insert(Character("O"));
-        alphabet.printVector(alphabet.getAlphabetVector());
-        for (int i = 0; i < 449; i++)
+        for (int i = 0; i < 10; i++)
         {
             if (!(i % 10))
                 cout << endl;

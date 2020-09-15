@@ -46,12 +46,14 @@ private:
     Str input;
 
 public:
+    DFA();
     DFA(Alphabet alphabet, Str input);
     ~DFA();
     void insertStatesVector(State state) {statesVector.push_back(state);}
     void generateDFA(int testNumber);
     void runDFA();
     bool isAccepted();
+    void test();
 };
 
 

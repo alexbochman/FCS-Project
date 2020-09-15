@@ -3,12 +3,7 @@
 #include <math.h>
 #include "Alphabet.hpp"
 
-Alphabet::Alphabet()
-{
-    // alphabetVector.push_back(Character("0"));
-    // alphabetVector.push_back(Character("1"));
-}
-
+Alphabet::Alphabet() {}
 Alphabet::~Alphabet() {}
 
 void Alphabet::printVector(std::vector<Character> vect)
