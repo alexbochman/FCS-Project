@@ -48,12 +48,14 @@ private:
     State currentState;
     State startState;
     std::vector<State> statesVector;
+    std::vector<int> traceVector;
     Alphabet alphabet;
     Str input;
 
 public:
     DFA();
     DFA(Str input);
+    DFA(Alphabet a);
     DFA(Alphabet alphabet, Str input);
     ~DFA();
     void insertStatesVector(State state) {statesVector.push_back(state);}
@@ -61,9 +63,12 @@ public:
     void setCurrentState(State s);
     void setStartState(State s);
     void setInput(Str input);
-    Str getInput() { return input; }
+    void setAlphabet(Alphabet alphabet);
     void runDFA();
-    bool isAccepted();
+    void printTrace();
+    State getCurrentState();
+    Str getInput() { return input; }
+    std::vector<int> getTrace(Str input);
     DFA task7(Character c);
 };
 

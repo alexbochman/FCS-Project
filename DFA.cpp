@@ -3,12 +3,33 @@
 
 DFA::DFA() {}
 DFA::DFA(Str input) : input(input) {}
+DFA::DFA(Alphabet a) : alphabet(a) {}
 DFA::DFA(Alphabet alphabet, Str input) : alphabet(alphabet), input(input) {}
 DFA::~DFA() {}
-bool DFA::isAccepted() { return currentState.getAcceptStatus(); }
+State DFA::getCurrentState() { return currentState; }
+void DFA::setAlphabet(Alphabet alphabet) { this->alphabet = alphabet; }
 void DFA::setCurrentState(State s) { this->currentState = s; }
 void DFA::setStartState(State s) { this->startState = s; }
 void DFA::setInput(Str str) { this->input = str; }
+
+void DFA::printTrace()
+{
+    for(int i = 0; i < (signed)traceVector.size(); i++)
+    {
+        if (i == (signed)traceVector.size() - 1)
+            std::cout << "q" << traceVector.at(i);
+        else
+            std::cout << "q" << traceVector.at(i) << " -> ";
+    }
+}
+
+std::vector<int> DFA::getTrace(Str input)
+{
+    this->input = input;
+    runDFA();
+    printTrace();
+    return traceVector;
+}
 
 void DFA::runDFA()
 {
@@ -17,6 +38,7 @@ void DFA::runDFA()
         if (x.getAcceptStatus() == true)
             proceed = true;
 
+    traceVector.push_back(currentState.getStateID());
     while (proceed && !(input.isEmpty()))
     {
         int i = 0;
@@ -32,6 +54,7 @@ void DFA::runDFA()
                 if (currentState.getTransValueFromTuple(i) == strValue)
                 {
                     currentState = statesVector.at(currentState.getIDfromTuple(i));
+                    traceVector.push_back(currentState.getStateID());
                     moved = true;
                 }
                 else if (currentState.getTransitionsVector().size() > 1 && (i != transVectSize))
@@ -46,10 +69,13 @@ void DFA::runDFA()
         }
     }
     if (currentState.getAcceptStatus())
-        std::cout << "\t[ACCEPTED]";
+        std::cout << "\t[ACCEPTED]\t";
     else
-        std::cout << "\t[REJECTED]";
-    std::cout << "\t" << currentState.getAcceptStatus() << std::endl;
+        std::cout << "\t[REJECTED]\t";
+    //std::cout << "\t" << currentState.getAcceptStatus() << "\t";
+    printTrace();
+    traceVector.clear();
+    std::cout << std::endl;
 }
 
 void DFA::testDFA(int testNumber)
@@ -94,7 +120,7 @@ void DFA::testDFA(int testNumber)
 
         startState = stateQ1;
         currentState = startState;
-        runDFA();
+        //runDFA();
         break;
     }
     case 4: // only accept if string ends in a 0
@@ -316,15 +342,19 @@ DFA DFA::task7(Character c)
     DFA temp;
     temp.alphabet = alphabet;
     alphabet.insert(c);
+
     State stateQ0(false, 0);
     State stateQ1(true, 1);
     State stateQ2(false, 2);
+
     stateQ0.insertTransition(1, c);
     stateQ1.insertTransition(2, c);
     stateQ2.insertTransition(2, c);
+
     temp.insertStatesVector(stateQ0);
     temp.insertStatesVector(stateQ1);
     temp.insertStatesVector(stateQ2);
+
     temp.startState = stateQ0;
     temp.currentState = startState;
     return temp;
