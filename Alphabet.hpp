@@ -35,14 +35,15 @@ private:
 public:
     Str(){}
     ~Str() {}
-
+    bool isEmpty() { return strVector.empty(); }
+    void insert(Character c) { strVector.insert(strVector.begin(), c); }
+    std::vector<Character> getStr() { return strVector; }
     std::string popFront()
     {
         std::string temp = strVector.front().getCharacterValue();
         strVector.erase(strVector.begin());
         return temp;
     }
-
     void printString()
     {
         if (strVector.empty())
@@ -52,9 +53,6 @@ public:
                 std::cout << c.getCharacterValue();
     }
 
-    bool isEmpty() {return strVector.empty();}
-    void insert(Character c) { strVector.insert(strVector.begin(), c); }
-    std::vector<Character> getStr() { return strVector; }
 };
 
 // Major class Alphabet:

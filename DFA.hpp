@@ -19,17 +19,23 @@ private:
     std::vector<std::tuple<int, Character>> transitions; // int: transition destination, Character: transition value
 
 public:
-    State();
-    State(bool acceptStatus, int stateID);
-    ~State();
-
+    State() {}
+    State(bool acceptStatus, int stateID) : acceptStatus(acceptStatus), stateID(stateID) {}
+    ~State() {};
     bool getAcceptStatus() { return this->acceptStatus; }
     int getStateID() { return stateID; }
-    void insertTransition(int stateID, Character transitionValue);
-    std::vector<std::tuple<int, Character>> getTransitionsVector() { return transitions; }
-
     int getIDfromTuple(int location) { return std::get<0>(transitions.at(location)); }
-    std::string getTransValueFromTuple(int location) { return std::get<1>(transitions.at(location)).getCharacterValue();}
+    std::vector<std::tuple<int, Character>> getTransitionsVector() { return transitions; }
+    std::string getTransValueFromTuple(int location) { return std::get<1>(transitions.at(location)).getCharacterValue(); }
+    void insertTransition(int stateID, Character transitionValue)
+    {
+        // Function creates a tuple with the state and its transition value and
+        // inserts the tuple into a vector. As in: GO TO [stateID] WITH VALUE OF [transitionValue]
+        std::tuple<int, Character> transition;
+        transition = std::make_tuple(stateID, transitionValue);
+        transitions.push_back(transition);
+    }
+
 };
 
 // Major class DFA:
@@ -47,13 +53,18 @@ private:
 
 public:
     DFA();
+    DFA(Str input);
     DFA(Alphabet alphabet, Str input);
     ~DFA();
     void insertStatesVector(State state) {statesVector.push_back(state);}
-    void generateDFA(int testNumber);
+    void testDFA(int testNumber);
+    void setCurrentState(State s);
+    void setStartState(State s);
+    void setInput(Str input);
+    Str getInput() { return input; }
     void runDFA();
     bool isAccepted();
-    void test();
+    DFA task7(Character c);
 };
 
 
