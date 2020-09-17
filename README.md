@@ -7,3 +7,6 @@
 
 <h2>Notes<br></h2>
 Currently on FCS Book PDF page: 68
+
+<h2>Final Problems<br></h2>
+Why does it matter that DFAs are closed under a union?

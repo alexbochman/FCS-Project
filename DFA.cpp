@@ -71,7 +71,7 @@ void DFA::runDFA()
     }
 }
 
-void DFA::testDFA(int testNumber)
+void DFA::initDFA(int testNumber)
 {
     switch (testNumber)
     {

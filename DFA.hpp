@@ -58,7 +58,7 @@ public:
     DFA(Alphabet alphabet, Str input);
     ~DFA();
     void insertStatesVector(State state) {statesVector.push_back(state);}
-    void testDFA(int testNumber);
+    void initDFA(int testNumber);
     void setCurrentState(State s);
     void setStartState(State s);
     void setInput(Str input);

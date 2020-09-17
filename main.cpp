@@ -16,6 +16,7 @@ bool isStrAccepted(DFA m, Str input)
     else
         std::cout << "\t[REJECTED]\t";
 
+    m.printTrace();
     return m.getCurrentState().getAcceptStatus() ? true : false;
 }
 
@@ -28,7 +29,7 @@ void runDfaTestCases()
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
-        myMachine.testDFA(1);
+        myMachine.initDFA(1);
 
         for (int i = 0; i < 20; i++)
         {
@@ -36,7 +37,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -47,7 +49,7 @@ void runDfaTestCases()
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
-        myMachine.testDFA(2);
+        myMachine.initDFA(2);
 
         for (int i = 0; i < 20; i++)
         {
@@ -55,7 +57,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -67,7 +70,7 @@ void runDfaTestCases()
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
-        myMachine.testDFA(3);
+        myMachine.initDFA(3);
 
         for (int i = 0; i < 20; i++)
         {
@@ -75,7 +78,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -86,7 +90,7 @@ void runDfaTestCases()
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
-        myMachine.testDFA(4);
+        myMachine.initDFA(4);
 
         for (int i = 0; i < 20; i++)
         {
@@ -95,7 +99,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -108,7 +113,7 @@ void runDfaTestCases()
         a.insert(Character("1"));
         a.insert(Character("2"));
         DFA myMachine(a);
-        myMachine.testDFA(5);
+        myMachine.initDFA(5);
 
         for (int i = 0; i < 20; i++)
         {
@@ -117,7 +122,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -130,16 +136,17 @@ void runDfaTestCases()
         a.insert(Character("L"));
         a.insert(Character("O"));
         DFA myMachine(a);
-        myMachine.testDFA(6);
+        myMachine.initDFA(6);
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 1000; i++)
         {
             if (!(i % 10))
                 cout << endl;
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -159,7 +166,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             alphabet.lexi(i).printString();
             Str input = alphabet.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -170,7 +178,7 @@ void runDfaTestCases()
         a.insert(Character("a"));
         a.insert(Character("b"));
         DFA myMachine(a);
-        myMachine.testDFA(8);
+        myMachine.initDFA(8);
 
         for (int i = 0; i < 20; i++)
         {
@@ -179,7 +187,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -190,7 +199,7 @@ void runDfaTestCases()
         a.insert(Character("a"));
         a.insert(Character("b"));
         DFA myMachine(a);
-        myMachine.testDFA(9);
+        myMachine.initDFA(9);
 
         for (int i = 0; i < 20; i++)
         {
@@ -199,7 +208,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -212,7 +222,7 @@ void runDfaTestCases()
         a.insert(Character("<Request Resource> "));
         a.insert(Character("<Release Resource> "));
         DFA myMachine(a);
-        myMachine.testDFA(10);
+        myMachine.initDFA(10);
 
         for (int i = 0; i < 20; i++)
         {
@@ -221,7 +231,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -232,7 +243,7 @@ void runDfaTestCases()
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
-        myMachine.testDFA(11);
+        myMachine.initDFA(11);
 
         for (int i = 0; i < 20; i++)
         {
@@ -241,7 +252,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }
@@ -252,7 +264,7 @@ void runDfaTestCases()
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
-        myMachine.testDFA(12);
+        myMachine.initDFA(12);
 
         for (int i = 0; i < 20; i++)
         {
@@ -261,7 +273,8 @@ void runDfaTestCases()
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            cout << isStrAccepted(myMachine, input) << endl;
+            isStrAccepted(myMachine, input);
+            cout << " " << endl;
         }
         cout << "====================================\n\n";
     }

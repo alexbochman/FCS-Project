@@ -66,7 +66,7 @@ private:
 public:
     Alphabet();
     ~Alphabet();
-    void printVector(std::vector<Character> vect);
+    void printVector();
     void insert(Character);
     std::vector<Character> getAlphabetVector();
     Str lexi(int n);
