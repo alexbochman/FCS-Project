@@ -5,7 +5,7 @@
     Alex Bochman - ID: 0187 9542<br><br>
 </p></h3>
 
-<br>Checkpoint 1 recording: https://www.youtube.com/watch?v=bE7id83jTZE&t=3s
+<br><b>Checkpoint 1 recording:</b> https://www.youtube.com/watch?v=bE7id83jTZE&t=3s
 
 <h2>Notes<br></h2>
 Currently on FCS Book PDF page: 68
