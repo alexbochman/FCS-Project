@@ -22,8 +22,8 @@ public:
     State() {}
     State(bool acceptStatus, int stateID) : acceptStatus(acceptStatus), stateID(stateID) {}
     ~State() {};
-    bool getAcceptStatus() { return this->acceptStatus; }
     int getStateID() { return stateID; }
+    bool getAcceptStatus() { return this->acceptStatus; }
     int getIDfromTuple(int location) { return std::get<0>(transitions.at(location)); }
     std::vector<std::tuple<int, Character>> getTransitionsVector() { return transitions; }
     std::string getTransValueFromTuple(int location) { return std::get<1>(transitions.at(location)).getCharacterValue(); }
@@ -35,7 +35,6 @@ public:
         transition = std::make_tuple(stateID, transitionValue);
         transitions.push_back(transition);
     }
-
 };
 
 // Major class DFA:
@@ -67,7 +66,7 @@ public:
     void runDFA();
     void printTrace();
     State getCurrentState();
-    Str getInput() { return input; }
+    Str getInput();
     std::vector<int> getTrace(Str input);
     DFA task7(Character c);
 };

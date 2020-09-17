@@ -7,6 +7,7 @@ DFA::DFA(Alphabet a) : alphabet(a) {}
 DFA::DFA(Alphabet alphabet, Str input) : alphabet(alphabet), input(input) {}
 DFA::~DFA() {}
 State DFA::getCurrentState() { return currentState; }
+Str DFA::getInput() { return input; }
 void DFA::setAlphabet(Alphabet alphabet) { this->alphabet = alphabet; }
 void DFA::setCurrentState(State s) { this->currentState = s; }
 void DFA::setStartState(State s) { this->startState = s; }
@@ -21,13 +22,13 @@ void DFA::printTrace()
         else
             std::cout << "q" << traceVector.at(i) << " -> ";
     }
+    traceVector.clear(); // careful here
 }
 
 std::vector<int> DFA::getTrace(Str input)
 {
     this->input = input;
     runDFA();
-    printTrace();
     return traceVector;
 }
 
@@ -68,14 +69,6 @@ void DFA::runDFA()
             if (broke) break;
         }
     }
-    if (currentState.getAcceptStatus())
-        std::cout << "\t[ACCEPTED]\t";
-    else
-        std::cout << "\t[REJECTED]\t";
-    //std::cout << "\t" << currentState.getAcceptStatus() << "\t";
-    printTrace();
-    traceVector.clear();
-    std::cout << std::endl;
 }
 
 void DFA::testDFA(int testNumber)
@@ -84,61 +77,52 @@ void DFA::testDFA(int testNumber)
     {
     case 1: // accepts no strings - TASK 5
     {
-        State stateQ1(false, 0);
-        startState = stateQ1;
+        State stateQ0(false, 0);
+        startState = stateQ0;
         currentState = startState;
-        runDFA();
+        insertStatesVector(stateQ0);
         break;
     }
     case 2: // accepts only the empty string. - TASK 6
     {
-        State stateQ1(true, 0);
-        State stateQ2(false, 1);
+        State stateQ0(true, 0);
+        State stateQ1(false, 1);
+        stateQ0.insertTransition(1, alphabet.getAlphabetVector().at(0));
+        stateQ0.insertTransition(1, alphabet.getAlphabetVector().at(1));
         stateQ1.insertTransition(1, alphabet.getAlphabetVector().at(0));
         stateQ1.insertTransition(1, alphabet.getAlphabetVector().at(1));
-
+        insertStatesVector(stateQ0);
         insertStatesVector(stateQ1);
-        insertStatesVector(stateQ2);
-
-        startState = stateQ1;
+        startState = stateQ0;
         currentState = startState;
-        runDFA();
         break;
     }
     case 3: // only accept if string ends in a 1
     {
-        State stateQ1(false, 0);
-        stateQ1.insertTransition(0, alphabet.getAlphabetVector().at(0));
+        State stateQ0(false, 0);
+        State stateQ1(true, 1);
+        stateQ0.insertTransition(0, alphabet.getAlphabetVector().at(0));
+        stateQ0.insertTransition(1, alphabet.getAlphabetVector().at(1));
         stateQ1.insertTransition(1, alphabet.getAlphabetVector().at(1));
-
-        State stateQ2(true, 1);
-        stateQ2.insertTransition(1, alphabet.getAlphabetVector().at(1));
-        stateQ2.insertTransition(0, alphabet.getAlphabetVector().at(0));
-
+        stateQ1.insertTransition(0, alphabet.getAlphabetVector().at(0));
+        insertStatesVector(stateQ0);
         insertStatesVector(stateQ1);
-        insertStatesVector(stateQ2);
-
-        startState = stateQ1;
+        startState = stateQ0;
         currentState = startState;
-        //runDFA();
         break;
     }
     case 4: // only accept if string ends in a 0
     {
         State stateQ0(true, 0);
+        State stateQ1(false, 1);
         stateQ0.insertTransition(0, alphabet.getAlphabetVector().at(0));
         stateQ0.insertTransition(1, alphabet.getAlphabetVector().at(1));
-
-        State stateQ1(false, 1);
         stateQ1.insertTransition(1, alphabet.getAlphabetVector().at(1));
         stateQ1.insertTransition(0, alphabet.getAlphabetVector().at(0));
-
         insertStatesVector(stateQ0);
         insertStatesVector(stateQ1);
-
         startState = stateQ0;
         currentState = startState;
-        runDFA();
         break;
     }
     case 5: // Book figure 1.14
@@ -167,7 +151,6 @@ void DFA::testDFA(int testNumber)
 
         startState = stateQ0;
         currentState = startState;
-        runDFA();
         break;
     }
     case 6: // Accepted only if HELLO is a substring of the input string
@@ -207,7 +190,6 @@ void DFA::testDFA(int testNumber)
 
         startState = stateQ0;
         currentState = startState;
-        runDFA();
         break;
     }
     case 8: // Book figure 1.12
@@ -235,7 +217,6 @@ void DFA::testDFA(int testNumber)
 
         startState = stateS;
         currentState = startState;
-        runDFA();
         break;
     }
     case 9: // Accepts only strings of even length
@@ -253,7 +234,6 @@ void DFA::testDFA(int testNumber)
 
         startState = stateQ0;
         currentState = startState;
-        runDFA();
         break;
     }
     case 10: // Modeled after an OS diagram WITH SINK STATE
@@ -285,7 +265,6 @@ void DFA::testDFA(int testNumber)
 
         startState = ready;
         currentState = startState;
-        runDFA();
         break;
     }
     case 11: // Book figure 1.20 accepts all strings that contain an odd number of 1s
@@ -303,7 +282,6 @@ void DFA::testDFA(int testNumber)
 
         startState = stateQ0;
         currentState = startState;
-        runDFA();
         break;
     }
     case 12: // Only accepts multiples of 3 (in binary)
@@ -327,7 +305,6 @@ void DFA::testDFA(int testNumber)
 
         startState = stateQ0;
         currentState = startState;
-        runDFA();
         break;
     }
     default:
@@ -361,7 +338,6 @@ DFA DFA::task7(Character c)
 }
 
 // DEBUGGING...
-//std::cout << "\tcurrentState.getID: " << currentState.getStateID() << "  ";
 // std::cout << "\t\tstrValue = " << strValue << std::endl;
 // std::cout << "\t\tcurrentState.getID: " << currentState.getStateID() << std::endl;
 // std::cout << "\t\tcurrentState.gettransvaluefromtuple(" << i << ") = " << currentState.getTransValueFromTuple(i) << std::endl << std::endl;

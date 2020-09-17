@@ -1,14 +1,14 @@
 x 2020-09-03 Decide on a data type to represent alphabets and characters.
 x 2020-09-03 Decide on a data type to represent strings.
 x 2020-09-03 Write a function that generates the Nth string of a given alphabet's lexicographic order.
-Define a data type to represent DFAs.
-Write the definition of a DFA that accepts no strings.
-Write the definition of a DFA that accepts only the empty string.
-Write a function that when given a character returns a DFA that accepts only strings of exactly that character.
-Write a dozen example DFAs.
-For each example DFA, write a dozen tests of their behavior.
-Write a function that given a DFA and a string, determines if the string is accepted.
-Write a function that given a DFA and a string, returns the trace of configurations it visits.
+x 2020-09-16 Define a data type to represent DFAs.
+x 2020-09-16 Write the definition of a DFA that accepts no strings.
+x 2020-09-16 Write the definition of a DFA that accepts only the empty string.
+x 2020-09-16 Write a function that when given a character returns a DFA that accepts only strings of exactly that character.
+x 2020-09-16 Write a dozen example DFAs.
+x 2020-09-16 For each example DFA, write a dozen tests of their behavior.
+x 2020-09-16 Write a function that given a DFA and a string, determines if the string is accepted.
+x 2020-09-16 Write a function that given a DFA and a string, returns the trace of configurations it visits.
 Write a function that given a DFA, returns a string that would be accepted (or false if this is not possible).
 (Complement) Write a function that takes one DFA and returns a DFA that accepts that the given one does not (and vice versa).
 (Union) Write a function that takes two DFAs and returns a third DFA that accepts a string if either argument accepts it.
