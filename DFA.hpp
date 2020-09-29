@@ -27,6 +27,19 @@ public:
     int getIDfromTuple(int location) { return std::get<0>(transitions.at(location)); }
     std::vector<std::tuple<int, Character>> getTransitionsVector() { return transitions; }
     std::string getTransValueFromTuple(int location) { return std::get<1>(transitions.at(location)).getCharacterValue(); }
+
+    Character getTransValueGivenID(int id)
+    {
+        Character c;
+        for(std::tuple<int, Character> i : transitions)
+        {
+            //std::cout << "\n1. NUH";
+            if(std::get<0>(i) == id)
+                return std::get<1>(i);
+        }
+        return c;
+    }
+
     void insertTransition(int stateID, Character transitionValue)
     {
         // Function creates a tuple with the state and its transition value and
@@ -64,7 +77,9 @@ public:
     void setAlphabet(Alphabet alphabet);
     void runDFA();
     void printTrace();
+    bool hasAnAcceptState();
     std::vector<int> getTrace(Str input);
+    std::vector<State> getStatesVector();
     State getCurrentState();
     Str getInput();
     DFA task7(Character c);

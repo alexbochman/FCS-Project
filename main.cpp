@@ -1,9 +1,35 @@
 
 #include <iostream>
+#include <optional>
 #include "Alphabet.hpp"
 #include "DFA.hpp"
 
 using namespace std;
+
+// Task 12 - Write a function that given a DFA, returns a string that would be accepted.
+tuple<bool, Str> possibleString(DFA m)
+{
+    vector<Character> c;
+    vector<State> visited;
+    vector<State> notVisited = m.getStatesVector();
+    if(m.hasAnAcceptState())
+    {
+        visited.push_back(notVisited.at(0));
+        notVisited.erase(notVisited.begin());
+        while (1)
+        {
+            if (visited.back().getAcceptStatus())
+            {
+                for (int i = 0; i < (signed)(visited.size() - 1); i++)
+                    c.push_back(visited.at(i).getTransValueGivenID(i + 1));
+                return make_tuple(true, Str(c));
+            }
+            visited.push_back(notVisited.at(0));
+            notVisited.erase(notVisited.begin());
+        }
+    }
+    return make_tuple(false, Str(c));
+}
 
 // Task 10 - Write a function that given a DFA and a string, determines if the string is accepted.
 bool isStrAccepted(DFA m, Str input)
@@ -12,37 +38,44 @@ bool isStrAccepted(DFA m, Str input)
     m.runDFA();
 
     if (m.getCurrentState().getAcceptStatus())
-        std::cout << "\t[ACCEPTED]\t";
+        cout << "\t[ACCEPTED]\t";
     else
-        std::cout << "\t[REJECTED]\t";
+        cout << "\t[REJECTED]\t";
 
     m.printTrace();
     return m.getCurrentState().getAcceptStatus() ? true : false;
 }
 
-// Task 8, 9 - Write a dozen example DFAs and test their behavior
 void runDfaTestCases()
 {
-    auto tester = [=](DFA myMachine, Alphabet a){
-        for (int i = 0; i < 20; i++){
-            if (!(i % 10)) cout << endl;
+    auto tester = [](DFA m, Alphabet a) {
+        cout << "\nPOSSIBLE STRING : ";
+        if (get<0>(possibleString(m)))
+            get<1>(possibleString(m)).printString();
+        else
+            cout << "False";
+        cout << "\n=============================================";
+        for (int i = 0; i < 10; i++)
+        {
+            if (!(i % 10))
+                cout << endl;
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
             Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
+            isStrAccepted(m, input);
             cout << " " << endl;
         }
+        cout << "=============================================\n\n";
     };
 
     { // [1] REJECT ALL STRINGS
-        cout << "\n[1] REJECT ALL STRINGS";
+        cout << "[1] REJECT ALL STRINGS";
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
-        DFA myMachine(a);
-        myMachine.initDFA(1);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(1);
+        tester(m, a);
     }
 
     { // [2] ACCEPT ONLY EMPTY STRING
@@ -50,10 +83,9 @@ void runDfaTestCases()
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
-        DFA myMachine(a);
-        myMachine.initDFA(2);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(2);
+        tester(m, a);
     }
 
     { // [3] ACCEPT ONLY IF STRING ENDS WITH 1
@@ -62,10 +94,9 @@ void runDfaTestCases()
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
-        DFA myMachine(a);
-        myMachine.initDFA(3);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(3);
+        tester(m, a);
     }
 
     { // [4] ACCEPT ONLY IF STRING ENDS WITH 0
@@ -73,10 +104,9 @@ void runDfaTestCases()
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
-        DFA myMachine(a);
-        myMachine.initDFA(4);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(4);
+        tester(m, a);
     }
 
     { // [5] BOOK EXAMPLE FIGURE 1.14
@@ -86,10 +116,9 @@ void runDfaTestCases()
         a.insert(Character("0"));
         a.insert(Character("1"));
         a.insert(Character("2"));
-        DFA myMachine(a);
-        myMachine.initDFA(5);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(5);
+        tester(m, a);
     }
 
     { // [6] ACCEPT ONLY IF \"HELLO\" IS A SUBSTRING
@@ -99,20 +128,18 @@ void runDfaTestCases()
         a.insert(Character("E"));
         a.insert(Character("L"));
         a.insert(Character("O"));
-        DFA myMachine(a);
-        myMachine.initDFA(6);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(6);
+        tester(m, a);
     }
 
     { // [7] TASK 7 - Function returns DFA that only accepts single input character
-        cout << "[7] TASK 7 - Function returns DFA that only accepts single input character";
-        Alphabet a;
-        Character character("X ");
-        a.insert(character);
-        DFA myMachine = myMachine.task7(character);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        // cout << "[7] TASK 7 - Function returns DFA that only accepts single input character";
+        // Alphabet a;
+        // Character character("X ");
+        // a.insert(character);
+        // DFA m = m.task7(character);
+        // tester(m, a);
     }
 
     { // [8] BOOK FIGURE 1.12
@@ -120,10 +147,9 @@ void runDfaTestCases()
         Alphabet a;
         a.insert(Character("a"));
         a.insert(Character("b"));
-        DFA myMachine(a);
-        myMachine.initDFA(8);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(8);
+        tester(m, a);
     }
 
     { // [9] ACCEPTS ONLY STRINGS OF EVEN LENGTH
@@ -131,23 +157,21 @@ void runDfaTestCases()
         Alphabet a;
         a.insert(Character("a"));
         a.insert(Character("b"));
-        DFA myMachine(a);
-        myMachine.initDFA(9);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(9);
+        tester(m, a);
     }
 
     { // [10] OS DIAGRAM WITH SINK STATE
-        cout << "[10] OS DIAGRAM WITH SINK STATE";
-        Alphabet a;
-        a.insert(Character("<Run> "));
-        a.insert(Character("<OS Schedule> "));
-        a.insert(Character("<Request Resource> "));
-        a.insert(Character("<Release Resource> "));
-        DFA myMachine(a);
-        myMachine.initDFA(10);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        // cout << "[10] OS DIAGRAM WITH SINK STATE";
+        // Alphabet a;
+        // a.insert(Character("<Run> "));
+        // a.insert(Character("<OS Schedule> "));
+        // a.insert(Character("<Request Resource> "));
+        // a.insert(Character("<Release Resource> "));
+        // DFA m(a);
+        // m.initDFA(10);
+        // tester(m, a);
     }
 
     { // [11] BOOK FIGURE 1.20 ACCEPTS ALL STRINGS THAT CONTAIN AN ODD NUMBER OF 1s
@@ -155,10 +179,9 @@ void runDfaTestCases()
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
-        DFA myMachine(a);
-        myMachine.initDFA(11);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(11);
+        tester(m, a);
     }
 
     { // [12] ONLY ACCEPTS MULTIPLES OF 3s (IN BINARY)
@@ -166,14 +189,14 @@ void runDfaTestCases()
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
-        DFA myMachine(a);
-        myMachine.initDFA(12);
-        tester(myMachine, a);
-        cout << "====================================\n\n";
+        DFA m(a);
+        m.initDFA(12);
+        tester(m, a);
     }
 }
 
 int main()
 {
+    cout << endl;
     runDfaTestCases();
 }

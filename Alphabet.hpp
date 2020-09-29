@@ -34,6 +34,7 @@ private:
 
 public:
     Str(){}
+    Str(std::vector<Character> cVect) : strVector(cVect) {}
     ~Str() {}
     bool isEmpty() { return strVector.empty(); }
     void insert(Character c) { strVector.insert(strVector.begin(), c); }
