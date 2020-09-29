@@ -23,16 +23,8 @@ bool isStrAccepted(DFA m, Str input)
 // Task 8, 9 - Write a dozen example DFAs and test their behavior
 void runDfaTestCases()
 {
-    {
-        cout << "\n[1] REJECT ALL STRINGS";
-        Alphabet a;
-        a.insert(Character("0"));
-        a.insert(Character("1"));
-        DFA myMachine(a);
-        myMachine.initDFA(1);
-
-        for (int i = 0; i < 20; i++)
-        {
+    auto tester = [=](DFA myMachine, Alphabet a){
+        for (int i = 0; i < 20; i++){
             if (!(i % 10)) cout << endl;
             cout << "Lexi(" << i << "): ";
             a.lexi(i).printString();
@@ -40,30 +32,31 @@ void runDfaTestCases()
             isStrAccepted(myMachine, input);
             cout << " " << endl;
         }
+    };
+
+    { // [1] REJECT ALL STRINGS
+        cout << "\n[1] REJECT ALL STRINGS";
+        Alphabet a;
+        a.insert(Character("0"));
+        a.insert(Character("1"));
+        DFA myMachine(a);
+        myMachine.initDFA(1);
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [2] ACCEPT ONLY EMPTY STRING
         cout << "[2] ACCEPT ONLY EMPTY STRING";
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
         myMachine.initDFA(2);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [3] ACCEPT ONLY IF STRING ENDS WITH 1
         cout << "[3] ACCEPT ONLY IF STRING ENDS WITH 1";
 
         Alphabet a;
@@ -71,41 +64,22 @@ void runDfaTestCases()
         a.insert(Character("1"));
         DFA myMachine(a);
         myMachine.initDFA(3);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [4] ACCEPT ONLY IF STRING ENDS WITH 0
         cout << "[4] ACCEPT ONLY IF STRING ENDS WITH 0";
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
         myMachine.initDFA(4);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [5] BOOK EXAMPLE FIGURE 1.14
         cout << "[5] BOOK EXAMPLE FIGURE 1.14";
         Alphabet a;
         a.insert(Character("R"));
@@ -114,21 +88,11 @@ void runDfaTestCases()
         a.insert(Character("2"));
         DFA myMachine(a);
         myMachine.initDFA(5);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [6] ACCEPT ONLY IF \"HELLO\" IS A SUBSTRING
         cout << "[6] ACCEPT ONLY IF \"HELLO\" IS A SUBSTRING";
         Alphabet a;
         a.insert(Character("H"));
@@ -137,84 +101,43 @@ void runDfaTestCases()
         a.insert(Character("O"));
         DFA myMachine(a);
         myMachine.initDFA(6);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [7] TASK 7 - Function returns DFA that only accepts single input character
         cout << "[7] TASK 7 - Function returns DFA that only accepts single input character";
-        Alphabet alphabet;
+        Alphabet a;
         Character character("X ");
-        alphabet.insert(character);
-
+        a.insert(character);
         DFA myMachine = myMachine.task7(character);
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            alphabet.lexi(i).printString();
-            Str input = alphabet.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [8] BOOK FIGURE 1.12
         cout << "[8] BOOK FIGURE 1.12";
         Alphabet a;
         a.insert(Character("a"));
         a.insert(Character("b"));
         DFA myMachine(a);
         myMachine.initDFA(8);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [9] ACCEPTS ONLY STRINGS OF EVEN LENGTH
         cout << "[9] ACCEPTS ONLY STRINGS OF EVEN LENGTH";
         Alphabet a;
         a.insert(Character("a"));
         a.insert(Character("b"));
         DFA myMachine(a);
         myMachine.initDFA(9);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [10] OS DIAGRAM WITH SINK STATE
         cout << "[10] OS DIAGRAM WITH SINK STATE";
         Alphabet a;
         a.insert(Character("<Run> "));
@@ -223,59 +146,29 @@ void runDfaTestCases()
         a.insert(Character("<Release Resource> "));
         DFA myMachine(a);
         myMachine.initDFA(10);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [11] BOOK FIGURE 1.20 ACCEPTS ALL STRINGS THAT CONTAIN AN ODD NUMBER OF 1s
         cout << "[11] BOOK FIGURE 1.20 ACCEPTS ALL STRINGS THAT CONTAIN AN ODD NUMBER OF 1s";
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
         myMachine.initDFA(11);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 
-    {
+    { // [12] ONLY ACCEPTS MULTIPLES OF 3s (IN BINARY)
         cout << "[12] ONLY ACCEPTS MULTIPLES OF 3s (IN BINARY)";
         Alphabet a;
         a.insert(Character("0"));
         a.insert(Character("1"));
         DFA myMachine(a);
         myMachine.initDFA(12);
-
-        for (int i = 0; i < 20; i++)
-        {
-            if (!(i % 10))
-                cout << endl;
-            cout << "Lexi(" << i << "): ";
-            a.lexi(i).printString();
-            Str input = a.lexi(i);
-            isStrAccepted(myMachine, input);
-            cout << " " << endl;
-        }
+        tester(myMachine, a);
         cout << "====================================\n\n";
     }
 }

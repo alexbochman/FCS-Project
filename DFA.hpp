@@ -57,7 +57,6 @@ public:
     DFA(Alphabet a);
     DFA(Alphabet alphabet, Str input);
     ~DFA();
-    void insertStatesVector(State state) {statesVector.push_back(state);}
     void initDFA(int testNumber);
     void setCurrentState(State s);
     void setStartState(State s);
@@ -65,9 +64,9 @@ public:
     void setAlphabet(Alphabet alphabet);
     void runDFA();
     void printTrace();
+    std::vector<int> getTrace(Str input);
     State getCurrentState();
     Str getInput();
-    std::vector<int> getTrace(Str input);
     DFA task7(Character c);
 };
 

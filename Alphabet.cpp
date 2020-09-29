@@ -6,6 +6,7 @@
 Alphabet::Alphabet() {}
 Alphabet::~Alphabet() {}
 void Alphabet::insert(Character c) { alphabetVector.push_back(c); }
+Character Alphabet::getCharacter(int location) {return alphabetVector.at(location);}
 std::vector<Character> Alphabet::getAlphabetVector() { return alphabetVector; }
 
 void Alphabet::printVector()

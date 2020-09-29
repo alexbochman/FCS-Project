@@ -69,6 +69,7 @@ public:
     void printVector();
     void insert(Character);
     std::vector<Character> getAlphabetVector();
+    Character getCharacter(int location);
     Str lexi(int n);
 
 };
