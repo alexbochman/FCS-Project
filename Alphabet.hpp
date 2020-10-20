@@ -19,12 +19,17 @@ private:
 class Str {
 private:
     std::vector<Character> strVector;
+    bool failed = false;
 public:
     Str(){}
     Str(std::vector<Character> cVect) : strVector(cVect) {}
     ~Str() {}
     void insert(Character c) { strVector.insert(strVector.begin(), c); }
     std::vector<Character> getStr() { return strVector; }
+    void setFail() { failed = true; }
+    bool hasFailed() { return failed; }
+    void pushBack(Character c) { strVector.push_back(c); }
+    int getSize() {return strVector.size();}
     void printString() {
         if (strVector.empty())
             std::cout << "\u03B5";
