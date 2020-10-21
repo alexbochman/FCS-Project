@@ -89,12 +89,13 @@ bool isStrAccepted_noTrace(DFA<T> m, Str w) {
 template <typename T>
 Str searchAlgo(DFA<T> m, T qi, std::vector<T> *visited, Str output) {
     vector<Character> E = m.getAlpha().getAlphabetVector();
-    if (m.getAcceptingStates()(qi))
+    if (m.accepts(output))
         return output;
 
     for (int i = 0; i < (int)E.size(); i++) {
         auto qNext = m.getTransitions()(qi, E.at(i));
         auto it = std::find(visited->begin(), visited->end(), qNext);
+        // if we haven't visited qNext, put qNext in visited, update output, recursive call
         if (it == visited->end()) {
             visited->push_back(qNext);
             output.pushBack(E.at(i));
@@ -343,7 +344,6 @@ void runDfaTestCases() {
         cout << endl;
     }
 }
-
 
 int main() {
     runDfaTestCases();
