@@ -8,9 +8,8 @@
 #include <tuple>
 
 template <class T>
-class DFA
-{
-private:
+class DFA {
+public:
     std::function<bool(T)> Q;
     Alphabet E;
     T q0;
@@ -18,7 +17,6 @@ private:
     std::function<bool(T)> F;
     std::vector<T> visitedStates;
 
-public:
     DFA(std::function<bool(T)> Q, Alphabet E, T q0,
         std::function<T(T, Character)> d,
         std::function<bool(T)> F)

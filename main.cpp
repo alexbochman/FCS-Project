@@ -7,6 +7,7 @@
 
 #include "Alphabet.hpp"
 #include "DFA.hpp"
+#include "NFA.hpp"
 
 using namespace std;
 
@@ -122,7 +123,7 @@ std::optional<Str> possibleString(DFA<T> m) {
 template <typename T>
 DFA<T> complementDFA(DFA<T> m) {
     auto F = m.getAcceptingStates();
-    function<bool(T)> fPrime = [=](int qi) { return !F(qi); };
+    auto fPrime = [=](T qi) { return !F(qi); };
     return DFA<T>(m.getStates(), m.getAlpha(), m.getStartState(), m.getTransitions(), fPrime);
 }
 
@@ -174,7 +175,14 @@ bool subset(DFA<T1> X, DFA<T2> Y) { return !possibleString(intersectDFAs(complem
 template <typename T1, typename T2>
 bool isEqual(DFA<T1> X, DFA<T2> Y) { return subset(X, Y) && subset(Y, X); }
 
-void runDfaTestCases() {
+// Task 24 - Convert DFA to NFA
+template <typename T>
+NFA<T> convertDFA(DFA<T> m) {
+    auto dPrime = [=](T state, Character c) { return c.getCharacterValue().empty() ? vector<T> {} : vector<T>{m.d(state, c)}; };
+    return NFA<T>(m.Q, m.E, m.q0, dPrime, m.F);
+}
+
+void runTestCases() {
 
     Alphabet binaryAlpha;
     binaryAlpha.setAlphaVector(vector<Character>{Character("0"), Character("1")});
@@ -235,7 +243,7 @@ void runDfaTestCases() {
                             [](int qi) { return qi == 1; });
 
         // [9] ONLY ACCEPT IF ALEX IS A SUBSTRING
-        DFA<int> alexDfa([](int qi) { return qi == 0 || qi == 1 || qi == 2 || qi == 3 || qi == 4; }, alexAlpha, 0,
+        DFA<int> alexDFA([](int qi) { return qi == 0 || qi == 1 || qi == 2 || qi == 3 || qi == 4; }, alexAlpha, 0,
                             [](int qi, Character c) {
                 switch (qi) {
                 case 0: return c.getCharacterValue() == "A" ? 1 : 0;
@@ -249,75 +257,49 @@ void runDfaTestCases() {
                 default: return 0; } },
                             [](int qi) { return qi == 4; });
 
-        cout << "====================================================================";
-        cout << "\n[1] ACCEPTS NO STRINGS\n";
-        cout << "====================================================================\n\n";
+        string divider = "\n====================================================================\n";
+        cout << divider << "[1] ACCEPTS NO STRINGS" << divider;
         test_trace(noString, 12);
-        test_trace(complementDFA(noString), 12);
 
-        cout << "====================================================================";
-        cout << "\n[2] ACCEPT ONLY EMPTY STRING\n";
-        cout << "====================================================================\n\n";
+        cout << divider << "[2] ACCEPT ONLY EMPTY STRING" << divider;
         test_trace(emptyString, 12);
-        test_trace(complementDFA(emptyString), 12);
         test_noTrace(unionDFAs(emptyString, noString), 12);
 
-        cout << "====================================================================";
-        cout << "\n[3] FUNCTION RETURNS A DFA THAT ONLY ACCEPTS GIVEN CHARACTER (TASK 7)\n";
-        cout << "====================================================================\n\n";
+        cout << divider << "[3] FUNCTION RETURNS A DFA THAT ONLY ACCEPTS GIVEN CHARACTER (TASK 7)" << divider;
         test_trace(task7DFA, 5);
-        test_trace(complementDFA(task7DFA), 5);
 
-        cout << "====================================================================";
-        cout << "\n[4] STRINGS OF EVEN LENGTH\n";
-        cout << "====================================================================\n\n";
+        cout << divider << "[4] STRINGS OF EVEN LENGTH" << divider;
         test_trace(evenLength, 12);
-        test_trace(complementDFA(evenLength), 12);
         test_noTrace(unionDFAs(complementDFA(evenLength), emptyString), 12);
         test_noTrace(intersectDFAs(evenLength, emptyString), 12);
 
-        cout << "====================================================================";
-        cout << "\n[5] STRINGS OF EVEN BINARY NUMBERS\n";
-        cout << "====================================================================\n\n";
+        cout << divider << "[5] STRINGS OF EVEN BINARY NUMBERS" << divider;
         test_trace(evenBinary, 12);
-        test_trace(complementDFA(evenBinary), 12);
         test_noTrace(unionDFAs(evenLength, evenBinary), 12);
         test_noTrace(intersectDFAs(evenLength, evenBinary), 12);
         test_noTrace(intersectDFAs(evenLength, evenBinary), 12);
         test_noTrace(intersectDFAs(complementDFA(evenLength), evenBinary), 12);
         test_noTrace(intersectDFAs(evenLength, complementDFA(evenBinary)), 12);
 
-        cout << "====================================================================";
-        cout << "\n[6] BOOK FIGURE 1.12\n";
-        cout << "====================================================================\n\n";
+        cout << divider << "[6] BOOK FIGURE 1.12" << divider;
         test_trace(bookFigure112, 12);
-        test_trace(complementDFA(bookFigure112), 12);
 
-        cout << "====================================================================";
-        cout << "\n[7] ONLY ACCEPT IF STRING ENDS IN A 1\n";
-        cout << "====================================================================\n\n";
+        cout << divider << "[7] ONLY ACCEPT IF STRING ENDS IN A 1" << divider;
         test_trace(endsIn1, 12);
-        test_trace(complementDFA(endsIn1), 12);
         test_noTrace(unionDFAs(endsIn1, evenBinary), 12);
         test_noTrace(unionDFAs(endsIn1, evenLength), 12);
         test_noTrace(intersectDFAs(endsIn1, evenLength), 12);
         test_noTrace(intersectDFAs(endsIn1, evenLength), 12);
 
-        cout << "====================================================================";
-        cout << "\n[8] ONLY ACCEPT IF STRING CONTAINS AN ODD NUMBER OF 1s (BOOK FIGURE 1.20)\n";
-        cout << "====================================================================\n\n";
+        cout << divider << "[8] ONLY ACCEPT IF STRING CONTAINS AN ODD NUMBER OF 1s (BOOK FIGURE 1.20)" << divider;
         test_trace(bookFigure120, 12);
         test_trace(complementDFA(bookFigure120), 12);
 
-        cout << "====================================================================";
-        cout << "\n[9] ONLY ACCEPT IF ALEX IS A SUBSTRING\n";
-        cout << "====================================================================\n\n";
-        test_trace(alexDfa, 12);
-        test_trace(complementDFA(alexDfa), 12);
+        cout << divider << "[9] ONLY ACCEPT IF ALEX IS A SUBSTRING" << divider;
+        test_trace(alexDFA, 12);
+        test_trace(complementDFA(alexDFA), 12);
 
-        cout << "====================================================================";
-        cout << "\nTASK 18 & 19 - SUBSET TESTS\n";
-        cout << "====================================================================\n";
+        cout << divider << "TASK 18 & 19 - SUBSET TESTS" << divider;
         cout << "\nsubset(endsIn1, evenLength)\t\t  :\t" << subset(endsIn1, evenLength);
         cout << "\nsubset(evenLength, endsIn1)\t\t  :\t" << subset(evenLength, endsIn1);
         cout << "\nsusbset(evenBinary, emptyString)\t  :\t" << subset(evenBinary, emptyString);
@@ -327,11 +309,9 @@ void runDfaTestCases() {
         cout << "\nsusbset(emptyString, evenLength)\t  :\t" << subset(emptyString, evenLength);
         cout << "\nsusbset(noString, emptyString)\t\t  :\t" << subset(noString, emptyString);
         cout << "\nsusbset(emptyString, noString)\t\t  :\t" << subset(noString, emptyString);
-        cout << "\nsusbset(alexDfa, complementDFA(noString)) :\t" << subset(alexDfa, complementDFA(noString));
+        cout << "\nsusbset(alexDFA, complementDFA(noString)) :\t" << subset(alexDFA, complementDFA(noString));
 
-        cout << "\n\n====================================================================";
-        cout << "\nTASK 20 & 21 - EQUALITY TESTS\n";
-        cout << "====================================================================\n";
+        cout << "\n\n" << divider << "TASK 20 & 21 - EQUALITY TESTS" << divider;
         cout << "\nisEqual(endsIn1, evenLength)\t\t  :\t" << isEqual(endsIn1, evenLength);
         cout << "\nisEqual(bookFigure120, bookFigure112)\t  :\t" << isEqual(bookFigure120, bookFigure112);
         cout << "\nisEqual(noString, emptyString)\t\t  :\t" << isEqual(noString, emptyString);
@@ -340,12 +320,48 @@ void runDfaTestCases() {
         cout << "\nisEqual(endsIn1, endsIn1)\t\t  :\t" << isEqual(endsIn1, endsIn1);
         cout << "\nisEqual(noString, noString)\t\t  :\t" << isEqual(noString, noString);
         cout << "\nisEqual(emptyString, emptyString)\t  :\t" << isEqual(emptyString, emptyString);
-        cout << "\nisEqual(alexDfa, alexDfa)\t\t  :\t" << isEqual(alexDfa, alexDfa);
-        cout << endl;
+        cout << "\nisEqual(alexDFA, alexDFA)\t\t  :\t" << isEqual(alexDFA, alexDFA);
+
+        cout << "\n\n" << divider << "TASK 22 - VERIFYING UNION, INTERSECT, COMPLEMENT" << divider;
+        cout << "\nTest [1]  \t :\t" << isEqual(unionDFAs(emptyString, complementDFA(emptyString)), complementDFA(noString));
+        cout << "\nTest [2]  \t :\t" << isEqual(unionDFAs(noString, emptyString), intersectDFAs(complementDFA(noString), emptyString));
+        cout << "\nTest [3]  \t :\t" << isEqual(intersectDFAs(emptyString, complementDFA(emptyString)), noString);
+        cout << "\nTest [4]  \t :\t" << isEqual(intersectDFAs(complementDFA(noString), alexDFA), alexDFA);
+
+        auto emptyNFA = convertDFA(emptyString);
+
+    }
+
+    { // NFAs Initialized Below, Test Calls At The Bottom
+
+        NFA<int> testNFA([](int qi) { return qi == 0 || qi == 1 || qi == 2 || qi == 3; }, binaryAlpha, 0,
+                         [](int qi, Character c) {
+                            vector<int> possibleTrans;
+                            if(c.getCharacterValue().empty()) return possibleTrans;
+
+                            switch (qi) {
+                            case 0:
+                                possibleTrans.push_back(0);
+                                if(c.getCharacterValue() == "1") possibleTrans.push_back(1);
+                                break;
+                            case 1:
+                                possibleTrans.push_back(2);
+                                break;
+                            case 2:
+                                possibleTrans.push_back(3);
+                                break;
+                            default:
+                                return possibleTrans;
+                            }
+                            return possibleTrans;
+                        },
+                        [](int qi) { return 3; });
     }
 }
 
+
+
 int main() {
-    runDfaTestCases();
-    cout << endl;
+    runTestCases();
+    cout << endl << endl;
 }
