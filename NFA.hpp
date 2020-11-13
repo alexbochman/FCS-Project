@@ -2,16 +2,17 @@
 #ifndef NFA_HPP
 #define NFA_HPP
 
-#include "Alphabet.hpp"
-#include "DFA.hpp"
 #include <functional>
 #include <iostream>
-#include <vector>
 #include <tuple>
+#include <vector>
+
+#include "Alphabet.hpp"
+#include "DFA.hpp"
 
 template <class T>
 class NFA {
-public:
+   public:
     std::function<bool(T)> Q;
     Alphabet E;
     T q0;
@@ -24,8 +25,7 @@ public:
         std::function<bool(T)> F)
         : Q(Q), E(E), q0(q0), d(d), F(F){};
 
-    ~NFA() {};
-
+    ~NFA(){};
 };
 
 #endif

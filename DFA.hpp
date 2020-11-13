@@ -1,15 +1,16 @@
 #ifndef DFA_HPP
 #define DFA_HPP
 
-#include "Alphabet.hpp"
 #include <functional>
 #include <iostream>
-#include <vector>
 #include <tuple>
+#include <vector>
+
+#include "Alphabet.hpp"
 
 template <class T>
 class DFA {
-public:
+   public:
     std::function<bool(T)> Q;
     Alphabet E;
     T q0;
@@ -23,10 +24,10 @@ public:
         : Q(Q), E(E), q0(q0), d(d), F(F){};
 
     void trace() {
-    std::cout << "\u03B5";
-    for (auto i : visitedStates)
-        std::cout << " -> " << std::to_string(i);
-    std::cout << '\n';
+        std::cout << "\u03B5";
+        for (auto i : visitedStates)
+            std::cout << " -> " << std::to_string(i);
+        std::cout << '\n';
     }
 
     bool accepts(Str w) {
@@ -59,7 +60,6 @@ public:
     Alphabet getAlpha() { return E; }
 
     DFA unionDFAs(DFA m);
-
 };
 
 #endif
