@@ -9,10 +9,15 @@
 
 class Character {
    public:
-    Character() { characterValue = "[DEFAULT CHARACTER CONSTRUCTOR]"; }
+    Character() { characterValue = "\u03B5"; }
     Character(std::string string) { this->characterValue = string; }
+    Character(char c) { this->characterValue = c; }
     ~Character() {}
-    std::string getCharacterValue() { return characterValue; }
+    std::string getCharacterValue() {
+        if (characterValue.empty())
+            characterValue = "\u03B5";
+        return characterValue;
+    }
 
    private:
     std::string characterValue;
@@ -22,11 +27,18 @@ class Str {
    private:
     std::vector<Character> strVector;
     bool failed = false;
+    std::string s;
 
    public:
     Str() {}
     Str(std::vector<Character> cVect) : strVector(cVect) {}
+    Str(std::string s) : s(s) {
+        for (unsigned int i = 0; i < this->s.size(); i++)
+            strVector.push_back(Character(this->s.substr(i, 1)));
+    }
     ~Str() {}
+
+    void eraseFront() { strVector.erase(strVector.begin()); }
     void insert(Character c) { strVector.insert(strVector.begin(), c); }
     std::vector<Character> getStr() { return strVector; }
     void setFail() { failed = true; }
